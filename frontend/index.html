@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,185 +8,1919 @@
     <title>SmartRoom AI</title>
 
     <style>
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Calibri, Arial, sans-serif;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
             background: #f5f7fa;
-            color: #222;
+            color: #1f2937;
         }
 
-        .header {
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
             background: #ffffff;
-            padding: 20px 35px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .header h1 {
-            margin: 0;
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        nav button {
+            border: none;
+            background: transparent;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        nav button.active {
+            background: #eef2ff;
+            color: #3730a3;
+            font-weight: 600;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 35px 30px 60px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-title {
             font-size: 28px;
-        }
-
-        .header p {
-            margin: 6px 0 0;
-            color: #666;
-        }
-
-        .container {
-            padding: 30px 35px;
-        }
-
-        .section-title {
-            margin-bottom: 18px;
-        }
-
-        .rooms {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .room-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        .room-card h3 {
-            margin-top: 0;
             margin-bottom: 8px;
         }
 
+        .page-description {
+            color: #6b7280;
+            margin-bottom: 28px;
+        }
+
+        /* =========================
+           SUMMARY CARDS
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 22px;
+        }
+
+        .summary-label {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .summary-value {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        /* =========================
+           ROOMS
+        ========================= */
+
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .room-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 18px;
+            background: #ffffff;
+        }
+
+        .room-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .room-id {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
         .room-info {
-            margin: 8px 0;
-            color: #555;
+            font-size: 14px;
+            margin: 7px 0;
         }
 
         .status {
             display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            background: #eeeeee;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 5px 9px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
         }
 
-        .live-section {
-            margin-top: 35px;
+        .status-available {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .status-occupied {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .status-booked {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .status-active {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .status-finished {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .status-noshow {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            padding: 11px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 15px;
             background: white;
-            border: 1px solid #ddd;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .primary-button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #3730a3;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .primary-button:hover {
+            background: #312e81;
+        }
+
+        .secondary-button {
+            padding: 10px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* =========================
+           ROOM SELECTION
+        ========================= */
+
+        .available-rooms {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .select-room {
+            border: 1px solid #d1d5db;
+            padding: 15px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .select-room:hover {
+            border-color: #6366f1;
+        }
+
+        .select-room.selected {
+            border: 2px solid #3730a3;
+            background: #eef2ff;
+        }
+
+        /* =========================
+           BOOKINGS TABS
+        ========================= */
+
+        .booking-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .booking-tab {
+            border: none;
+            background: transparent;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+        }
+
+        .booking-tab.active {
+            color: #3730a3;
+            border-bottom-color: #3730a3;
+            font-weight: 600;
+        }
+
+        .booking-count {
+            display: inline-block;
+            margin-left: 5px;
+            background: #f3f4f6;
+            padding: 2px 7px;
             border-radius: 10px;
-            padding: 20px;
+            font-size: 11px;
         }
 
-        .live-status {
-            font-size: 18px;
-            font-weight: bold;
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-container {
+            overflow-x: auto;
         }
 
-        .footer {
-            margin-top: 30px;
-            color: #777;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            background: #f9fafb;
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        td {
+            padding: 14px 13px;
+            border-bottom: 1px solid #f0f0f0;
             font-size: 14px;
         }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px;
+            color: #6b7280;
+        }
+
+        /* =========================
+           NOTIFICATION
+        ========================= */
+
+        .notification {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            padding: 14px 20px;
+            background: #1f2937;
+            color: white;
+            border-radius: 7px;
+            display: none;
+            z-index: 1000;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .summary-grid,
+            .room-grid,
+            .available-rooms {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            nav {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            main {
+                padding: 25px 15px;
+            }
+
+            .summary-grid,
+            .room-grid,
+            .available-rooms,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-tabs {
+                overflow-x: auto;
+            }
+        }
+
     </style>
 </head>
 
+
 <body>
 
-    <div class="header">
-        <h1>SmartRoom AI</h1>
-        <p>Real-Time Meeting Room Optimization System</p>
-    </div>
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-    <div class="container">
+    <header>
 
-        <h2 class="section-title">Meeting Rooms</h2>
+        <div>
+            <div class="brand">
+                SmartRoom AI
+            </div>
 
-        <div class="rooms" id="roomsContainer">
-            <p>Loading rooms...</p>
+            <div class="subtitle">
+                Enterprise Meeting Room Management
+            </div>
         </div>
 
-        <div class="live-section">
-            <h2>Live System Status</h2>
+        <nav>
 
-            <p class="live-status" id="systemStatus">
-                Connecting to SmartRoom AI...
+            <button
+                class="nav-button active"
+                onclick="showPage('dashboard', this)">
+                Dashboard
+            </button>
+
+            <button
+                class="nav-button"
+                onclick="showPage('book-room', this)">
+                Book a Room
+            </button>
+
+            <button
+                class="nav-button"
+                onclick="showPage('my-bookings', this)">
+                My Bookings
+            </button>
+
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section
+            id="dashboard"
+            class="page active">
+
+            <h1 class="page-title">
+                Corporate Meeting Room Dashboard
+            </h1>
+
+            <p class="page-description">
+                Monitor meeting rooms and manage current bookings.
             </p>
 
-            <p>
-                This dashboard will receive simulated booking and
-                occupancy data in real time.
+
+            <div class="summary-grid">
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Total Rooms
+                    </div>
+
+                    <div
+                        class="summary-value"
+                        id="totalRooms">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Available Now
+                    </div>
+
+                    <div
+                        class="summary-value"
+                        id="availableRooms">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Bookings
+                    </div>
+
+                    <div
+                        class="summary-value"
+                        id="totalBookings">
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+                    Meeting Rooms
+                </div>
+
+                <div
+                    id="roomGrid"
+                    class="room-grid">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             BOOK A ROOM
+        ================================================== -->
+
+        <section
+            id="book-room"
+            class="page">
+
+            <h1 class="page-title">
+                Book a Meeting Room
+            </h1>
+
+            <p class="page-description">
+                Schedule a meeting and select a suitable available room.
             </p>
-        </div>
 
-        <div class="footer">
-            SmartRoom AI Prototype
-        </div>
 
+            <div class="section">
+
+                <div class="section-title">
+                    Meeting Details
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="meetingDate">
+                            Meeting Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="meetingDate">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="attendees">
+                            Expected Attendees
+                        </label>
+
+                        <input
+                            type="number"
+                            id="attendees"
+                            min="1"
+                            placeholder="Example: 6">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="startTime">
+                            Start Time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="startTime"
+                            step="300">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="endTime">
+                            End Time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="endTime"
+                            step="300">
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="primary-button"
+                    onclick="findAvailableRooms()">
+
+                    Find Available Rooms
+
+                </button>
+
+
+                <div
+                    id="availableRoomsContainer"
+                    style="display:none;">
+
+                    <div
+                        class="section-title"
+                        style="margin-top:30px;">
+
+                        Available Rooms
+
+                    </div>
+
+                    <div
+                        id="availableRoomsGrid"
+                        class="available-rooms">
+                    </div>
+
+
+                    <button
+                        class="primary-button"
+                        id="bookButton"
+                        onclick="bookSelectedRoom()"
+                        disabled>
+
+                        Book Selected Room
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MY BOOKINGS
+        ================================================== -->
+
+        <section
+            id="my-bookings"
+            class="page">
+
+            <h1 class="page-title">
+                My Bookings
+            </h1>
+
+            <p class="page-description">
+                View your meeting room booking history and current reservations.
+            </p>
+
+
+            <div class="section">
+
+
+                <!-- BOOKING TABS -->
+
+                <div class="booking-tabs">
+
+                    <button
+                        class="booking-tab active"
+                        onclick="changeBookingTab('UPCOMING', this)">
+
+                        Upcoming
+
+                        <span
+                            class="booking-count"
+                            id="upcomingCount">
+                            0
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="booking-tab"
+                        onclick="changeBookingTab('ACTIVE', this)">
+
+                        Active
+
+                        <span
+                            class="booking-count"
+                            id="activeCount">
+                            0
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="booking-tab"
+                        onclick="changeBookingTab('FINISHED', this)">
+
+                        Finished
+
+                        <span
+                            class="booking-count"
+                            id="finishedCount">
+                            0
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="booking-tab"
+                        onclick="changeBookingTab('NO_SHOW', this)">
+
+                        No-Show
+
+                        <span
+                            class="booking-count"
+                            id="noShowCount">
+                            0
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- BOOKINGS TABLE -->
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Booking ID
+                                </th>
+
+                                <th>
+                                    Room
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Time
+                                </th>
+
+                                <th>
+                                    Attendees
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="bookingTableBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         NOTIFICATION
+    ====================================================== -->
+
+    <div
+        id="notification"
+        class="notification">
     </div>
+
 
     <script>
+
+        let rooms = [];
+
+        let bookings = [];
+
+        let selectedRoom = null;
+
+        let currentBookingTab = "UPCOMING";
+
+
+        // ==================================================
+        // PAGE NAVIGATION
+        // ==================================================
+
+        function showPage(pageId, button) {
+
+            document
+                .querySelectorAll(".page")
+                .forEach(page => {
+                    page.classList.remove("active");
+                });
+
+            document
+                .getElementById(pageId)
+                .classList.add("active");
+
+
+            document
+                .querySelectorAll(".nav-button")
+                .forEach(btn => {
+                    btn.classList.remove("active");
+                });
+
+            if (button) {
+                button.classList.add("active");
+            }
+
+
+            if (pageId === "dashboard") {
+                loadDashboard();
+            }
+
+            if (pageId === "my-bookings") {
+                loadBookings();
+            }
+
+        }
+
+
+        // ==================================================
+        // NOTIFICATION
+        // ==================================================
+
+        function showNotification(message) {
+
+            const notification =
+                document.getElementById("notification");
+
+            notification.textContent = message;
+
+            notification.style.display = "block";
+
+
+            setTimeout(() => {
+
+                notification.style.display = "none";
+
+            }, 3500);
+
+        }
+
+
+        // ==================================================
+        // LOAD ROOMS
+        // ==================================================
+
         async function loadRooms() {
 
             try {
 
-                const response = await fetch("/api/rooms");
+                const response =
+                    await fetch("/api/rooms");
 
-                const rooms = await response.json();
+                rooms =
+                    await response.json();
 
-                const container =
-                    document.getElementById("roomsContainer");
-
-                container.innerHTML = "";
-
-                rooms.forEach(room => {
-
-                    const card = document.createElement("div");
-
-                    card.className = "room-card";
-
-                    card.innerHTML = `
-                        <h3>${room.room_name}</h3>
-
-                        <div class="room-info">
-                            Room ID: ${room.room_id}
-                        </div>
-
-                        <div class="room-info">
-                            Capacity: ${room.capacity} people
-                        </div>
-
-                        <div class="room-info">
-                            Location: ${room.location}
-                        </div>
-
-                        <span class="status">
-                            ${room.status}
-                        </span>
-                    `;
-
-                    container.appendChild(card);
-                });
-
-                document.getElementById("systemStatus").innerText =
-                    "🟢 Connected to SmartRoom AI";
+                renderRooms();
 
             } catch (error) {
 
                 console.error(error);
 
-                document.getElementById("systemStatus").innerText =
-                    "🔴 Unable to connect to backend";
+                showNotification(
+                    "Unable to load rooms."
+                );
             }
         }
 
-        loadRooms();
+
+        // ==================================================
+        // RENDER ROOMS
+        // ==================================================
+
+        function renderRooms() {
+
+            const grid =
+                document.getElementById("roomGrid");
+
+            grid.innerHTML = "";
+
+
+            document.getElementById(
+                "totalRooms"
+            ).textContent = rooms.length;
+
+
+            let availableCount = 0;
+
+
+            rooms.forEach(room => {
+
+                let status =
+                    room.status || "AVAILABLE";
+
+                let statusClass =
+                    "status-available";
+
+
+                if (
+                    status === "OCCUPIED"
+                ) {
+
+                    statusClass =
+                        "status-occupied";
+
+                }
+
+
+                if (
+                    status === "BOOKED"
+                ) {
+
+                    statusClass =
+                        "status-booked";
+
+                }
+
+
+                if (
+                    status === "ACTIVE"
+                ) {
+
+                    statusClass =
+                        "status-active";
+
+                }
+
+
+                if (
+                    status === "AVAILABLE"
+                ) {
+
+                    availableCount++;
+
+                }
+
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "room-card";
+
+
+                card.innerHTML = `
+
+                    <div class="room-name">
+                        ${room.room_name}
+                    </div>
+
+                    <div class="room-id">
+                        ${room.room_id}
+                    </div>
+
+                    <div class="room-info">
+                        Capacity: ${room.capacity}
+                    </div>
+
+                    <div class="room-info">
+                        Location: ${room.location}
+                    </div>
+
+                    <span class="status ${statusClass}">
+                        ${status}
+                    </span>
+
+                `;
+
+
+                grid.appendChild(card);
+
+            });
+
+
+            document.getElementById(
+                "availableRooms"
+            ).textContent = availableCount;
+
+        }
+
+
+        // ==================================================
+        // LOAD BOOKINGS
+        // ==================================================
+
+        async function loadBookings() {
+
+            try {
+
+                const response =
+                    await fetch("/api/bookings");
+
+                bookings =
+                    await response.json();
+
+
+                bookings.sort(
+                    (a, b) =>
+                        new Date(a.start_time)
+                        -
+                        new Date(b.start_time)
+                );
+
+
+                updateBookingCounts();
+
+                renderBookingTable();
+
+                updateDashboardBookingCount();
+
+            } catch (error) {
+
+                console.error(error);
+
+                showNotification(
+                    "Unable to load bookings."
+                );
+            }
+        }
+
+
+        // ==================================================
+        // BOOKING COUNTS
+        // ==================================================
+
+        function updateBookingCounts() {
+
+            const upcoming =
+                bookings.filter(
+                    booking =>
+                        booking.status === "BOOKED"
+                ).length;
+
+
+            const active =
+                bookings.filter(
+                    booking =>
+                        booking.status === "ACTIVE"
+                ).length;
+
+
+            const finished =
+                bookings.filter(
+                    booking =>
+                        booking.status === "COMPLETED"
+                ).length;
+
+
+            const noShow =
+                bookings.filter(
+                    booking =>
+                        booking.status === "NO_SHOW" ||
+                        booking.status === "RELEASED"
+                ).length;
+
+
+            document.getElementById(
+                "upcomingCount"
+            ).textContent = upcoming;
+
+
+            document.getElementById(
+                "activeCount"
+            ).textContent = active;
+
+
+            document.getElementById(
+                "finishedCount"
+            ).textContent = finished;
+
+
+            document.getElementById(
+                "noShowCount"
+            ).textContent = noShow;
+
+        }
+
+
+        // ==================================================
+        // DASHBOARD BOOKING COUNT
+        // ==================================================
+
+        function updateDashboardBookingCount() {
+
+            const currentBookings =
+                bookings.filter(
+                    booking =>
+                        booking.status === "BOOKED" ||
+                        booking.status === "ACTIVE"
+                ).length;
+
+
+            document.getElementById(
+                "totalBookings"
+            ).textContent = currentBookings;
+
+        }
+
+
+        // ==================================================
+        // BOOKING TAB
+        // ==================================================
+
+        function changeBookingTab(
+            tab,
+            button
+        ) {
+
+            currentBookingTab = tab;
+
+
+            document
+                .querySelectorAll(".booking-tab")
+                .forEach(btn => {
+
+                    btn.classList.remove(
+                        "active"
+                    );
+
+                });
+
+
+            button.classList.add(
+                "active"
+            );
+
+
+            renderBookingTable();
+
+        }
+
+
+        // ==================================================
+        // RENDER BOOKING TABLE
+        // ==================================================
+
+        function renderBookingTable() {
+
+            const tableBody =
+                document.getElementById(
+                    "bookingTableBody"
+                );
+
+
+            tableBody.innerHTML = "";
+
+
+            let filteredBookings = [];
+
+
+            if (
+                currentBookingTab ===
+                "UPCOMING"
+            ) {
+
+                filteredBookings =
+                    bookings.filter(
+                        booking =>
+                            booking.status ===
+                            "BOOKED"
+                    );
+
+            }
+
+
+            if (
+                currentBookingTab ===
+                "ACTIVE"
+            ) {
+
+                filteredBookings =
+                    bookings.filter(
+                        booking =>
+                            booking.status ===
+                            "ACTIVE"
+                    );
+
+            }
+
+
+            if (
+                currentBookingTab ===
+                "FINISHED"
+            ) {
+
+                filteredBookings =
+                    bookings.filter(
+                        booking =>
+                            booking.status ===
+                            "COMPLETED"
+                    );
+
+            }
+
+
+            if (
+                currentBookingTab ===
+                "NO_SHOW"
+            ) {
+
+                filteredBookings =
+                    bookings.filter(
+                        booking =>
+                            booking.status ===
+                            "NO_SHOW" ||
+                            booking.status ===
+                            "RELEASED"
+                    );
+
+            }
+
+
+            if (
+                filteredBookings.length === 0
+            ) {
+
+                tableBody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="empty-state">
+
+                            No bookings in this category.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+            }
+
+
+            filteredBookings.forEach(
+                booking => {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    let statusText =
+                        booking.status;
+
+                    let statusClass =
+                        "status-booked";
+
+
+                    if (
+                        booking.status ===
+                        "ACTIVE"
+                    ) {
+
+                        statusText = "ACTIVE";
+
+                        statusClass =
+                            "status-active";
+
+                    }
+
+
+                    if (
+                        booking.status ===
+                        "COMPLETED"
+                    ) {
+
+                        statusText = "FINISHED";
+
+                        statusClass =
+                            "status-finished";
+
+                    }
+
+
+                    if (
+                        booking.status ===
+                        "NO_SHOW" ||
+                        booking.status ===
+                        "RELEASED"
+                    ) {
+
+                        statusText = "NO-SHOW";
+
+                        statusClass =
+                            "status-noshow";
+
+                    }
+
+
+                    const startDate =
+                        new Date(
+                            booking.start_time
+                        );
+
+
+                    const endDate =
+                        new Date(
+                            booking.end_time
+                        );
+
+
+                    const dateText =
+                        startDate.toLocaleDateString(
+                            "en-IN",
+                            {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        );
+
+
+                    const startTime =
+                        startDate.toLocaleTimeString(
+                            "en-IN",
+                            {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            }
+                        );
+
+
+                    const endTime =
+                        endDate.toLocaleTimeString(
+                            "en-IN",
+                            {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            }
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            <strong>
+                                ${booking.booking_id}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${booking.room_id}
+                        </td>
+
+                        <td>
+                            ${dateText}
+                        </td>
+
+                        <td>
+                            ${startTime}
+                            -
+                            ${endTime}
+                        </td>
+
+                        <td>
+                            ${booking.attendees}
+                        </td>
+
+                        <td>
+                            <span
+                                class="status ${statusClass}">
+                                ${statusText}
+                            </span>
+                        </td>
+
+                    `;
+
+
+                    tableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==================================================
+        // FIND AVAILABLE ROOMS
+        // ==================================================
+
+        async function findAvailableRooms() {
+
+            const date =
+                document.getElementById(
+                    "meetingDate"
+                ).value;
+
+
+            const startTime =
+                document.getElementById(
+                    "startTime"
+                ).value;
+
+
+            const endTime =
+                document.getElementById(
+                    "endTime"
+                ).value;
+
+
+            const attendees =
+                parseInt(
+                    document.getElementById(
+                        "attendees"
+                    ).value
+                );
+
+
+            if (
+                !date ||
+                !startTime ||
+                !endTime ||
+                !attendees
+            ) {
+
+                showNotification(
+                    "Please fill all meeting details."
+                );
+
+                return;
+            }
+
+
+            if (
+                endTime <= startTime
+            ) {
+
+                showNotification(
+                    "End time must be after start time."
+                );
+
+                return;
+            }
+
+
+            const requestedStart =
+                new Date(
+                    `${date}T${startTime}`
+                );
+
+
+            const requestedEnd =
+                new Date(
+                    `${date}T${endTime}`
+                );
+
+
+            const availableRooms =
+                rooms.filter(room => {
+
+                    if (
+                        attendees >
+                        room.capacity
+                    ) {
+
+                        return false;
+
+                    }
+
+
+                    const conflict =
+                        bookings.some(
+                            booking => {
+
+                                if (
+                                    booking.room_id !==
+                                    room.room_id
+                                ) {
+
+                                    return false;
+
+                                }
+
+
+                                if (
+                                    booking.status !==
+                                    "BOOKED" &&
+                                    booking.status !==
+                                    "ACTIVE"
+                                ) {
+
+                                    return false;
+
+                                }
+
+
+                                const bookingStart =
+                                    new Date(
+                                        booking.start_time
+                                    );
+
+
+                                const bookingEnd =
+                                    new Date(
+                                        booking.end_time
+                                    );
+
+
+                                return (
+                                    requestedStart <
+                                    bookingEnd &&
+                                    requestedEnd >
+                                    bookingStart
+                                );
+
+                            }
+                        );
+
+
+                    return !conflict;
+
+                });
+
+
+            const container =
+                document.getElementById(
+                    "availableRoomsContainer"
+                );
+
+
+            const grid =
+                document.getElementById(
+                    "availableRoomsGrid"
+                );
+
+
+            container.style.display =
+                "block";
+
+
+            grid.innerHTML = "";
+
+
+            selectedRoom = null;
+
+
+            document.getElementById(
+                "bookButton"
+            ).disabled = true;
+
+
+            if (
+                availableRooms.length === 0
+            ) {
+
+                grid.innerHTML = `
+
+                    <div
+                        class="empty-state"
+                        style="grid-column:1/-1;">
+
+                        No suitable rooms are
+                        available for this time.
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            availableRooms.forEach(
+                room => {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "select-room";
+
+
+                    card.innerHTML = `
+
+                        <strong>
+                            ${room.room_name}
+                        </strong>
+
+                        <div
+                            style="
+                            margin-top:8px;
+                            color:#6b7280;
+                            font-size:13px;
+                            ">
+
+                            ${room.room_id}
+                            · Capacity ${room.capacity}
+                            · ${room.location}
+
+                        </div>
+
+                    `;
+
+
+                    card.onclick = () => {
+
+                        document
+                            .querySelectorAll(
+                                ".select-room"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList
+                                        .remove(
+                                            "selected"
+                                        )
+                            );
+
+
+                        card.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedRoom =
+                            room;
+
+
+                        document.getElementById(
+                            "bookButton"
+                        ).disabled = false;
+
+                    };
+
+
+                    grid.appendChild(card);
+
+                }
+            );
+
+        }
+
+
+        // ==================================================
+        // BOOK SELECTED ROOM
+        // ==================================================
+
+        async function bookSelectedRoom() {
+
+            if (!selectedRoom) {
+
+                showNotification(
+                    "Please select a room first."
+                );
+
+                return;
+            }
+
+
+            const date =
+                document.getElementById(
+                    "meetingDate"
+                ).value;
+
+
+            const startTime =
+                document.getElementById(
+                    "startTime"
+                ).value;
+
+
+            const endTime =
+                document.getElementById(
+                    "endTime"
+                ).value;
+
+
+            const attendees =
+                parseInt(
+                    document.getElementById(
+                        "attendees"
+                    ).value
+                );
+
+
+            const start =
+                `${date}T${startTime}`;
+
+
+            const end =
+                `${date}T${endTime}`;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/bookings",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    room_id:
+                                        selectedRoom.room_id,
+
+                                    start_time:
+                                        start,
+
+                                    end_time:
+                                        end,
+
+                                    attendees:
+                                        attendees
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    showNotification(
+                        result.message ||
+                        "Booking failed."
+                    );
+
+                    return;
+                }
+
+
+                showNotification(
+                    `Room booked successfully. Booking ID: ${result.booking.booking_id}`
+                );
+
+
+                selectedRoom = null;
+
+
+                document.getElementById(
+                    "availableRoomsContainer"
+                ).style.display = "none";
+
+
+                document.getElementById(
+                    "meetingDate"
+                ).value = "";
+
+
+                document.getElementById(
+                    "startTime"
+                ).value = "";
+
+
+                document.getElementById(
+                    "endTime"
+                ).value = "";
+
+
+                document.getElementById(
+                    "attendees"
+                ).value = "";
+
+
+                await loadBookings();
+
+                await loadRooms();
+
+
+                // Automatically open My Bookings
+                const myBookingsButton =
+                    document.querySelectorAll(
+                        ".nav-button"
+                    )[2];
+
+
+                showPage(
+                    "my-bookings",
+                    myBookingsButton
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showNotification(
+                    "Unable to create booking."
+                );
+
+            }
+
+        }
+
+
+        // ==================================================
+        // DASHBOARD
+        // ==================================================
+
+        async function loadDashboard() {
+
+            await loadRooms();
+
+            await loadBookings();
+
+        }
+
+
+        // ==================================================
+        // INITIAL LOAD
+        // ==================================================
+
+        async function initializeApp() {
+
+            await loadRooms();
+
+            await loadBookings();
+
+        }
+
+
+        initializeApp();
+
+
+        // ==================================================
+        // AUTO REFRESH
+        // Every 30 seconds the system checks booking status.
+        // ==================================================
+
+        setInterval(
+            async () => {
+
+                await loadRooms();
+
+                await loadBookings();
+
+            },
+            30000
+        );
+
     </script>
 
 </body>
+
 </html>
