@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, send_from_directory
 import sqlite3
 import os
 
@@ -11,102 +11,52 @@ DATABASE_PATH = os.path.join(
     "smartroom.db"
 )
 
+FRONTEND_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "..",
+    "frontend"
+)
+
 
 def get_connection():
     return sqlite3.connect(DATABASE_PATH)
 
 
 @app.route("/")
-def home():
-    return "SmartRoom AI is connected to the database!"
+def dashboard():
+    return send_from_directory(FRONTEND_PATH, "index.html")
 
 
-@app.route("/rooms")
-def rooms():
+@app.route("/api/rooms")
+def api_rooms():
+
     connection = get_connection()
+    connection.row_factory = sqlite3.Row
+
     cursor = connection.cursor()
 
     cursor.execute("""
         SELECT room_id, room_name, capacity, location, status
         FROM rooms
+        ORDER BY room_id
     """)
 
-    rooms_data = cursor.fetchall()
+    rooms = cursor.fetchall()
 
     connection.close()
 
-    html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>SmartRoom AI - Rooms</title>
+    rooms_list = []
 
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 40px;
-                background-color: #f5f7fa;
-            }
+    for room in rooms:
+        rooms_list.append({
+            "room_id": room["room_id"],
+            "room_name": room["room_name"],
+            "capacity": room["capacity"],
+            "location": room["location"],
+            "status": room["status"]
+        })
 
-            h1 {
-                margin-bottom: 25px;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                background-color: white;
-            }
-
-            th, td {
-                padding: 14px;
-                border: 1px solid #ddd;
-                text-align: left;
-            }
-
-            th {
-                background-color: #eeeeee;
-            }
-
-            tr:hover {
-                background-color: #f9f9f9;
-            }
-        </style>
-    </head>
-
-    <body>
-
-        <h1>SmartRoom AI - Meeting Rooms</h1>
-
-        <table>
-            <tr>
-                <th>Room ID</th>
-                <th>Room Name</th>
-                <th>Capacity</th>
-                <th>Location</th>
-                <th>Status</th>
-            </tr>
-    """
-
-    for room in rooms_data:
-        html += f"""
-            <tr>
-                <td>{room[0]}</td>
-                <td>{room[1]}</td>
-                <td>{room[2]}</td>
-                <td>{room[3]}</td>
-                <td>{room[4]}</td>
-            </tr>
-        """
-
-    html += """
-        </table>
-
-    </body>
-    </html>
-    """
-
-    return html
+    return jsonify(rooms_list)
 
 
 if __name__ == "__main__":

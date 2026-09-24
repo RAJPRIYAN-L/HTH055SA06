@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartRoom AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        .header {
+            background: #ffffff;
+            padding: 20px 35px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            color: #666;
+        }
+
+        .container {
+            padding: 30px 35px;
+        }
+
+        .section-title {
+            margin-bottom: 18px;
+        }
+
+        .rooms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .room-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .room-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .room-info {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #eeeeee;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .live-section {
+            margin-top: 35px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .live-status {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>SmartRoom AI</h1>
+        <p>Real-Time Meeting Room Optimization System</p>
+    </div>
+
+    <div class="container">
+
+        <h2 class="section-title">Meeting Rooms</h2>
+
+        <div class="rooms" id="roomsContainer">
+            <p>Loading rooms...</p>
+        </div>
+
+        <div class="live-section">
+            <h2>Live System Status</h2>
+
+            <p class="live-status" id="systemStatus">
+                Connecting to SmartRoom AI...
+            </p>
+
+            <p>
+                This dashboard will receive simulated booking and
+                occupancy data in real time.
+            </p>
+        </div>
+
+        <div class="footer">
+            SmartRoom AI Prototype
+        </div>
+
+    </div>
+
+    <script>
+        async function loadRooms() {
+
+            try {
+
+                const response = await fetch("/api/rooms");
+
+                const rooms = await response.json();
+
+                const container =
+                    document.getElementById("roomsContainer");
+
+                container.innerHTML = "";
+
+                rooms.forEach(room => {
+
+                    const card = document.createElement("div");
+
+                    card.className = "room-card";
+
+                    card.innerHTML = `
+                        <h3>${room.room_name}</h3>
+
+                        <div class="room-info">
+                            Room ID: ${room.room_id}
+                        </div>
+
+                        <div class="room-info">
+                            Capacity: ${room.capacity} people
+                        </div>
+
+                        <div class="room-info">
+                            Location: ${room.location}
+                        </div>
+
+                        <span class="status">
+                            ${room.status}
+                        </span>
+                    `;
+
+                    container.appendChild(card);
+                });
+
+                document.getElementById("systemStatus").innerText =
+                    "🟢 Connected to SmartRoom AI";
+
+            } catch (error) {
+
+                console.error(error);
+
+                document.getElementById("systemStatus").innerText =
+                    "🔴 Unable to connect to backend";
+            }
+        }
+
+        loadRooms();
+    </script>
+
+</body>
+</html>
